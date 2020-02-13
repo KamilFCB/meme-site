@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dodaj mema</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'memes_site/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'memes_site/main.css' %}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <script src="https://bootswatch.com/_vendor/jquery/dist/jquery.min.js"></script>
+    <script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+{% include 'memes_site/menu.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4 col-xl-4 offset-xl-4">
+            <h1>Dodaj mema</h1>
+            {% if error_message %}
+                <div class="alert alert-dismissible alert-danger login-alert">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ error_message }}
+                </div>
+            {% endif %}
+            <form action="{% url 'memes:image_upload' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="InputTitle">Tytuł</label>
+                    <input type="text" class="form-control" name="title" id="InputTitle" placeholder="Tytuł" required>
+                </div>
+                <div class="form-group">
+                    <label for="InputImage">Mem</label>
+                    <input type="file" class="form-control" name="image" id="InputImage" required accept="image/*">
+                </div>
+                <button type="submit" class="btn btn-primary">Dodaj</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

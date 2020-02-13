@@ -1,0 +1,107 @@
+from django.contrib.auth.models import User
+from django.template.loader import render_to_string
+
+from memes_site.models import Vote, Comment
+
+
+def format_date(images):
+    """
+    Convert date to "H:M D-M-Y" format
+    :param images:
+    :return: list of images with converted date
+    """
+    for image in images:
+        image.date = image.date.strftime("%H:%M %d-%m-%Y")
+
+
+def votes_list(images, username):
+    """
+    Creates list of upvoted and downvoted images by user
+    :param images:
+    :param username:
+    :return: Pair of lists
+    """
+    down_votes = []
+    up_votes = []
+    try:
+        user = User.objects.get(username=username)
+        for image in images:
+            try:
+                vote = Vote.objects.get(image=image, author=user)
+                if vote.type == 'UP':
+                    up_votes.append(image.id)
+                else:
+                    down_votes.append(image.id)
+            except Vote.DoesNotExist:
+                continue
+    except User.DoesNotExist:
+        pass
+
+    return down_votes, up_votes
+
+
+def pagination_manage(data, paginator, page_number, request):
+    """
+    Sets pagination data
+    :param data:
+    :param paginator:
+    :param page_number:
+    :param request:
+    :return:
+    """
+    if page_number == paginator.page_range.start:
+        data['disabled_prev'] = 1
+    if page_number == paginator.page_range.stop - 1:
+        data['disabled_next'] = 1
+    if request.user.is_authenticated:
+        data['username'] = request.user.get_username()
+
+
+def page_list(paginator, page_number):
+    """
+    Creates list of page numbers included on the page
+    :param paginator:
+    :param page_number:
+    :return: List of page numbers
+    """
+    return [i for i in range(paginator.page_range.start, paginator.page_range.stop)
+            if (page_number - 2 <= i <= page_number + 2)]
+
+
+def count_comments(images):
+    """
+    Get number of :model:`memes_site.Comment` related to :model:`memes_site.Image`
+    :param images:
+    :return: Number of comments
+    """
+    for image in images:
+        image.comments_number = Comment.objects.filter(image=image).count()
+
+
+def prepare_data(page_images, request, paginator, page_number):
+    """
+    Prepare data to display on main page and fresh images page
+    :param page_images:
+    :param request:
+    :param paginator:
+    :param page_number:
+    :return: Page data
+    """
+    votes = votes_list(page_images, request.user.get_username())
+    count_comments(page_images)
+    data = {
+        'images': page_images,
+        'menu': render_to_string('memes_site/menu.html', {'username': request.user.get_username()}),
+        'username': request.user.get_username(),
+        'comments_number': {'1': 0},
+        'down_votes': votes[0],
+        'up_votes': votes[1],
+        'page_list': page_list(paginator, page_number),
+        'page_number': page_number,
+        'next_page': page_number + 1,
+        'prev_page': page_number - 1,
+        'disabled_prev': 0,
+        'disabled_next': 0
+    }
+    pagination_manage(data, paginator, page_number, request)
+    return data

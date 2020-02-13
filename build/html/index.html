@@ -1,0 +1,380 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome to Memes site’s documentation! &#8212; Memes site  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-memes-site-s-documentation">
+<h1>Welcome to Memes site’s documentation!<a class="headerlink" href="#welcome-to-memes-site-s-documentation" title="Permalink to this headline">¶</a></h1>
+</div>
+<div class="section" id="module-account.views">
+<span id="account-views"></span><h1>Account views<a class="headerlink" href="#module-account.views" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="account.views.login_validate">
+<code class="sig-prename descclassname">account.views.</code><code class="sig-name descname">login_validate</code><span class="sig-paren">(</span><em class="sig-param">request</em><span class="sig-paren">)</span><a class="headerlink" href="#account.views.login_validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate login data
+:param request:
+:return: redirect to login page if error occurred or to next page from POST data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="account.views.login_view">
+<code class="sig-prename descclassname">account.views.</code><code class="sig-name descname">login_view</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">status=''</em><span class="sig-paren">)</span><a class="headerlink" href="#account.views.login_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display login page
+:param request:
+:param status: equal ‘fail’ if login error occured
+:return: Login form</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="account.views.logout_view">
+<code class="sig-prename descclassname">account.views.</code><code class="sig-name descname">logout_view</code><span class="sig-paren">(</span><em class="sig-param">request</em><span class="sig-paren">)</span><a class="headerlink" href="#account.views.logout_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logout user
+:param request:
+:return: Redirect to main page</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="account.views.manage_view">
+<code class="sig-prename descclassname">account.views.</code><code class="sig-name descname">manage_view</code><span class="sig-paren">(</span><em class="sig-param">request</em><span class="sig-paren">)</span><a class="headerlink" href="#account.views.manage_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display account manage view. Actually only allows to change password.
+:param request:
+:return: Account template</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="account.views.register_validate">
+<code class="sig-prename descclassname">account.views.</code><code class="sig-name descname">register_validate</code><span class="sig-paren">(</span><em class="sig-param">request</em><span class="sig-paren">)</span><a class="headerlink" href="#account.views.register_validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate register data and create new user
+:param request:
+:return: redirect to register page if error occurred or to main page</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="account.views.register_view">
+<code class="sig-prename descclassname">account.views.</code><code class="sig-name descname">register_view</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">status=''</em><span class="sig-paren">)</span><a class="headerlink" href="#account.views.register_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display register form
+:param request:
+:param status: equal ‘fail’ if login error occured
+:return: Register form</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-memes_site.models">
+<span id="memes-site-models"></span><h1>Memes_site models<a class="headerlink" href="#module-memes_site.models" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="memes_site.models.Comment">
+<em class="property">class </em><code class="sig-prename descclassname">memes_site.models.</code><code class="sig-name descname">Comment</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.models.Comment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a single comment, related to <a href="#id1"><span class="problematic" id="id2">:model:`auth.User`</span></a> and <a href="#id3"><span class="problematic" id="id4">:model:`memes_site.Image`</span></a></p>
+<dl class="exception">
+<dt id="memes_site.models.Comment.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#memes_site.models.Comment.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="memes_site.models.Comment.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#memes_site.models.Comment.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="memes_site.models.CommentVote">
+<em class="property">class </em><code class="sig-prename descclassname">memes_site.models.</code><code class="sig-name descname">CommentVote</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.models.CommentVote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a single comment vote, related to <a href="#id5"><span class="problematic" id="id6">:model:`auth.User`</span></a>, <a href="#id7"><span class="problematic" id="id8">:model:`memes_site.Comment`</span></a></p>
+<dl class="exception">
+<dt id="memes_site.models.CommentVote.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#memes_site.models.CommentVote.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="memes_site.models.CommentVote.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#memes_site.models.CommentVote.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="memes_site.models.Image">
+<em class="property">class </em><code class="sig-prename descclassname">memes_site.models.</code><code class="sig-name descname">Image</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.models.Image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a single image, related to <a href="#id9"><span class="problematic" id="id10">:model:`auth.User`</span></a></p>
+<dl class="exception">
+<dt id="memes_site.models.Image.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#memes_site.models.Image.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="memes_site.models.Image.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#memes_site.models.Image.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="memes_site.models.Vote">
+<em class="property">class </em><code class="sig-prename descclassname">memes_site.models.</code><code class="sig-name descname">Vote</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.models.Vote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a single vote, related to <a href="#id11"><span class="problematic" id="id12">:model:`auth.User`</span></a>, <a href="#id13"><span class="problematic" id="id14">:model:`memes_site.Image`</span></a></p>
+<dl class="exception">
+<dt id="memes_site.models.Vote.DoesNotExist">
+<em class="property">exception </em><code class="sig-name descname">DoesNotExist</code><a class="headerlink" href="#memes_site.models.Vote.DoesNotExist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="exception">
+<dt id="memes_site.models.Vote.MultipleObjectsReturned">
+<em class="property">exception </em><code class="sig-name descname">MultipleObjectsReturned</code><a class="headerlink" href="#memes_site.models.Vote.MultipleObjectsReturned" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-memes_site.views">
+<span id="memes-site-views"></span><h1>Memes_site views<a class="headerlink" href="#module-memes_site.views" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="memes_site.views.comment_vote_view">
+<code class="sig-prename descclassname">memes_site.views.</code><code class="sig-name descname">comment_vote_view</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">vote_type</em>, <em class="sig-param">comment_id</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.views.comment_vote_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new comment vote or change existing one
+:param request:
+:param vote_type: vote_down or vote_up
+:param comment_id:
+:return: redirect to voted comment</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.views.create_comment">
+<code class="sig-prename descclassname">memes_site.views.</code><code class="sig-name descname">create_comment</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">image_id</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.views.create_comment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds <a href="#id15"><span class="problematic" id="id16">:model:`memes_site.Comment`</span></a> to database
+:param request:
+:param image_id:
+:return: redirect to commented image</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.views.delete_comment">
+<code class="sig-prename descclassname">memes_site.views.</code><code class="sig-name descname">delete_comment</code><span class="sig-paren">(</span><em class="sig-param">request</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.views.delete_comment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes <a href="#id17"><span class="problematic" id="id18">:model:`memes_site.Comment`</span></a> from database
+:param request:
+:return: redirect to main page</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.views.fresh_view">
+<code class="sig-prename descclassname">memes_site.views.</code><code class="sig-name descname">fresh_view</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">page_number=1</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.views.fresh_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays all <a href="#id19"><span class="problematic" id="id20">:model:`memes_site.Image`</span></a> sorted by date descending
+:param request:
+:param page_number: default is equal 1
+:return: two images from selected page</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.views.image_delete">
+<code class="sig-prename descclassname">memes_site.views.</code><code class="sig-name descname">image_delete</code><span class="sig-paren">(</span><em class="sig-param">request</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.views.image_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete <a href="#id21"><span class="problematic" id="id22">:model:`memes_site.Image`</span></a> from database
+:param request:
+:return: Redirect to main page</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.views.image_upload_view">
+<code class="sig-prename descclassname">memes_site.views.</code><code class="sig-name descname">image_upload_view</code><span class="sig-paren">(</span><em class="sig-param">request</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.views.image_upload_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates new <a href="#id23"><span class="problematic" id="id24">:model:`memes_site.Image`</span></a>
+:param request:
+:return: Redirect to upload view, with error if image is too wide</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.views.image_view">
+<code class="sig-prename descclassname">memes_site.views.</code><code class="sig-name descname">image_view</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">image_id</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.views.image_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays a single <a href="#id25"><span class="problematic" id="id26">:model:`memes_site.Image`</span></a>
+:param request:
+:param image_id:
+:return: Image with related comments</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.views.image_vote_down">
+<code class="sig-prename descclassname">memes_site.views.</code><code class="sig-name descname">image_vote_down</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">image_id</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.views.image_vote_down" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new image down vote or change existing one
+:param request:
+:param image_id:
+:return: redirect to previous page</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.views.image_vote_up">
+<code class="sig-prename descclassname">memes_site.views.</code><code class="sig-name descname">image_vote_up</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">image_id</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.views.image_vote_up" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new image up vote or change existing one
+:param request:
+:param image_id:
+:return: redirect to previous page</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.views.index_page">
+<code class="sig-prename descclassname">memes_site.views.</code><code class="sig-name descname">index_page</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">page_number=1</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.views.index_page" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start page view
+Displays <a href="#id27"><span class="problematic" id="id28">:model:`memes_site.Image`</span></a> with at least 1 up vote sorted by date descending
+:param request:
+:param page_number: default is equal 1
+:return: two images from selected page</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.views.user_view">
+<code class="sig-prename descclassname">memes_site.views.</code><code class="sig-name descname">user_view</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">username</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.views.user_view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display <a href="#id29"><span class="problematic" id="id30">:model:`auth.User`</span></a> activity
+:param request:
+:param username:
+:return: Uploaded, commented and voted images by user</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-memes_site.utils">
+<span id="memes-site-utils"></span><h1>Memes_site utils<a class="headerlink" href="#module-memes_site.utils" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="memes_site.utils.count_comments">
+<code class="sig-prename descclassname">memes_site.utils.</code><code class="sig-name descname">count_comments</code><span class="sig-paren">(</span><em class="sig-param">images</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.utils.count_comments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get number of <a href="#id31"><span class="problematic" id="id32">:model:`memes_site.Comment`</span></a> related to <a href="#id33"><span class="problematic" id="id34">:model:`memes_site.Image`</span></a>
+:param images:
+:return: Number of comments</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.utils.format_date">
+<code class="sig-prename descclassname">memes_site.utils.</code><code class="sig-name descname">format_date</code><span class="sig-paren">(</span><em class="sig-param">images</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.utils.format_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert date to “H:M D-M-Y” format
+:param images:
+:return: list of images with converted date</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.utils.page_list">
+<code class="sig-prename descclassname">memes_site.utils.</code><code class="sig-name descname">page_list</code><span class="sig-paren">(</span><em class="sig-param">paginator</em>, <em class="sig-param">page_number</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.utils.page_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates list of page numbers included on the page
+:param paginator:
+:param page_number:
+:return: List of page numbers</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.utils.pagination_manage">
+<code class="sig-prename descclassname">memes_site.utils.</code><code class="sig-name descname">pagination_manage</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">paginator</em>, <em class="sig-param">page_number</em>, <em class="sig-param">request</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.utils.pagination_manage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets pagination data
+:param data:
+:param paginator:
+:param page_number:
+:param request:
+:return:</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.utils.prepare_data">
+<code class="sig-prename descclassname">memes_site.utils.</code><code class="sig-name descname">prepare_data</code><span class="sig-paren">(</span><em class="sig-param">page_images</em>, <em class="sig-param">request</em>, <em class="sig-param">paginator</em>, <em class="sig-param">page_number</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.utils.prepare_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare data to display on main page and fresh images page
+:param page_images:
+:param request:
+:param paginator:
+:param page_number:
+:return: Page data</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="memes_site.utils.votes_list">
+<code class="sig-prename descclassname">memes_site.utils.</code><code class="sig-name descname">votes_list</code><span class="sig-paren">(</span><em class="sig-param">images</em>, <em class="sig-param">username</em><span class="sig-paren">)</span><a class="headerlink" href="#memes_site.utils.votes_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates list of upvoted and downvoted images by user
+:param images:
+:param username:
+:return: Pair of lists</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Memes site</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Kamil.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

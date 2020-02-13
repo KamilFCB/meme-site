@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logowanie</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'memes_site/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'memes_site/main.css' %}">
+    <script src="https://bootswatch.com/_vendor/jquery/dist/jquery.min.js"></script>
+    <script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+{% include 'memes_site/menu.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-4 col-xl-4 offset-xl-4">
+            <h1>Logowanie</h1>
+            {% if error_message %}
+                <div class="alert alert-dismissible alert-danger login-alert">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ error_message }}
+                </div>
+            {% endif %}
+                <form action="{% url 'account:login_validate' %}" method="post">
+                {% csrf_token %}
+                {% if next %}
+                    <input type="text" name="redirect" value="{{ next }}" hidden>
+                {% endif %}
+                <div class="form-group">
+                    <label for="InputLogin">Login</label>
+                    <input type="text" class="form-control" name="username" id="InputLogin" placeholder="Login"
+                           required>
+                </div>
+                <div class="form-group">
+                    <label for="InputPassword">Hasło</label>
+                    <input type="password" class="form-control" name="password" id="InputPassword" placeholder="Hasło"
+                           required>
+                </div>
+                <button type="submit" class="btn btn-primary">Zaloguj</button>
+            </form>
+            <p>Nie masz konta? <a href="{% url 'account:register' %}">Zarejestruj się!</a></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

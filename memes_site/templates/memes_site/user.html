@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ view_username }}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'memes_site/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'memes_site/main.css' %}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <script src="https://bootswatch.com/_vendor/jquery/dist/jquery.min.js"></script>
+    <script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+{% include 'memes_site/menu.html' %}
+<div class="container">
+    <h3>{{ view_username }}</h3>
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#posts">Dodane</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#comments">Skomentowane</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#votes">Ocenione</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade active show" id="posts">
+            {% for post in posts %}
+                <div class="row image" id="{{ post.id }}">
+                    <div class="col-xl-8 offset-xl-2">
+                        <div class="row">
+                            <h3><a href="{% url 'memes:image' post.id %}">{{ post.title }}</a></h3>
+                        </div>
+                        <div class="row">
+                            <a href="{% url 'memes:image' post.id %}">
+                                <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                            </a>
+                        </div>
+                        <div class="row image-menu">
+                            <i class="fa fa-arrow-up" aria-hidden="true" style="color: #44c35f;">
+                                {{ post.up_votes }}
+                            </i>
+                            <i class="fa fa-arrow-down" aria-hidden="true" style="color: #fc3903; margin: 0 10px;">
+                                {{ post.down_votes }}
+                            </i>
+                            {% if post.author.username == username %}
+                                <form method="post" action="{% url 'memes:image_delete' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="image_id" value="{{ post.id }}">
+                                    <input type="hidden" name="next" value="/user/{{ view_username }}/">
+                                    <button type="submit" class="btn btn-info">Usuń</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="tab-pane fade" id="comments">
+            {% for comment in comments %}
+                <div class="row image" id="{{ comment.id }}">
+                    <div class="col-xl-8 offset-xl-2">
+                        <div class="row">
+                            <h3><a href="{% url 'memes:image' comment.id %}">{{ comment.title }}</a></h3>
+                        </div>
+                        <div class="row">
+                            <a href="{% url 'memes:image' comment.id %}">
+                                <img src="{{ comment.image.url }}" alt="{{ comment.title }}">
+                            </a>
+                        </div>
+                        <div class="row image-menu">
+                            <i class="fa fa-arrow-up" aria-hidden="true" style="color: #44c35f;">
+                                {{ comment.up_votes }}
+                            </i>
+                            <i class="fa fa-arrow-down" aria-hidden="true" style="color: #fc3903; margin: 0 10px;">
+                                {{ comment.down_votes }}
+                            </i>
+                            {% if comment.author.username == username %}
+                                <form method="post" action="{% url 'memes:image_delete' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="image_id" value="{{ comment.id }}">
+                                    <input type="hidden" name="next" value="/user/{{ view_username }}/">
+                                    <button type="submit" class="btn btn-info">Usuń</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="tab-pane fade" id="votes">
+            {% for vote in votes %}
+                <div class="row image" id="{{ vote.id }}">
+                    <div class="col-xl-8 offset-xl-2">
+                        <div class="row">
+                            <h3><a href="{% url 'memes:image' vote.id %}">{{ vote.title }}</a></h3>
+                        </div>
+                        <div class="row">
+                            <a href="{% url 'memes:image' vote.id %}">
+                                <img src="{{ vote.image.url }}" alt="{{ vote.title }}">
+                            </a>
+                        </div>
+                        <div class="row image-menu">
+                            <i class="fa fa-arrow-up" aria-hidden="true" style="color: #44c35f;">
+                                {{ vote.up_votes }}
+                            </i>
+                            <i class="fa fa-arrow-down" aria-hidden="true" style="color: #fc3903; margin: 0 10px;">
+                                {{ vote.down_votes }}
+                            </i>
+                            {% if vote.author.username == username %}
+                                <form method="post" action="{% url 'memes:image_delete' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="image_id" value="{{ vote.id }}">
+                                    <input type="hidden" name="next" value="/user/{{ view_username }}/">
+                                    <button type="submit" class="btn btn-info">Usuń</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

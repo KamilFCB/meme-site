@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ image.title }}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'memes_site/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'memes_site/main.css' %}">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <script src="https://bootswatch.com/_vendor/jquery/dist/jquery.min.js"></script>
+    <script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+{% include 'memes_site/menu.html' %}
+<div class="container">
+    <div class="row image" id="{{ image.id }}">
+        <div class="col-xl-8 offset-xl-2">
+            <div class="row">
+                <h6>{{ image.author }} {{ image.date }}</h6>
+            </div>
+            <div class="row">
+                <h3>{{ image.title }}</h3>
+            </div>
+            <div class="row">
+                <img src="{{ image.image.url }}" alt="{{ image.title }}">
+            </div>
+            <div class="row image-menu">
+                <a href="{% url 'memes:vote_up' image.id %}?next={{ request.path }}">
+                    <button type="button" class="btn btn-secondary image-option">
+                        <i class="fa fa-arrow-up" aria-hidden="true" style="color: #44c35f;"> {{ image.up_votes }}</i>
+                    </button>
+                </a>
+                <a href="{% url 'memes:vote_down' image.id %}?next={{ request.path }}">
+                    <button type="button" class="btn btn-secondary image-option">
+                        <i class="fa fa-arrow-down" aria-hidden="true"
+                           style="color: #fc3903;"> {{ image.down_votes }}</i>
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="comments">
+        <div class="col-xl-8 offset-xl-2">
+            <hr>
+            <h3>Komentarzy: {{ comments_number }}</h3>
+            <form action="{% url 'memes:create_comment' image.id %}" method="post" style="margin-top: 30px">
+                {% csrf_token %}
+                <div class="form-group">
+                    <textarea class="form-control comment" name="comment" placeholder="Napisz komentarz..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Dodaj</button>
+            </form>
+        </div>
+    </div>
+    {% for comment in comments %}
+        <div class="row" id="{{ comment.id }}">
+            <div class="col-xl-8 offset-xl-2">
+                <hr>
+                <div class="row">
+                    <strong style="margin-right: 10px">{{ comment.author.username }}</strong> {{ comment.date }}
+                    {% if comment.author.username == username %}
+                        <form method="post" action="{% url 'memes:delete_comment' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                            <input type="hidden" name="next" value="/image/{{ image.id }}/#comments">
+                            <button type="submit" class="btn btn-primary btn-sm" style="margin-left: 10px">
+                                <i class="fa fa-eraser" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+                <div class="row comment-text">
+                    <span style="color: white">{{ comment.content }}</span>
+                </div>
+                <div class="row">
+                    <a href="{% url 'memes:comment_vote_up' 'vote_up' comment.id %}">
+                        {% if comment.id in up_voted %}
+                            <button type="button" class="btn btn-primary btn-sm disabled">
+                        {% else %}
+                            <button type="button" class="btn btn-primary btn-sm">
+                        {% endif %}
+                            <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                        </button>
+                    </a>
+                    <span class="comment-rating">
+                        {{ comment.rating }}
+                    </span>
+                    <a href="{% url 'memes:comment_vote_up' 'vote_down' comment.id %}">
+                        {% if comment.id in down_voted %}
+                            <button type="button" class="btn btn-primary btn-sm disabled">
+                        {% else %}
+                            <button type="button" class="btn btn-primary btn-sm">
+                        {% endif %}
+                            <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+</body>
+</html>

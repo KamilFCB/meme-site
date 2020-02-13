@@ -1,0 +1,36 @@
+.logo-menu {
+    width: 50px;
+    height: 31px;
+}
+
+.login-alert {
+    margin-top: 25px;
+}
+
+.image {
+    margin: 30px 0px;
+}
+
+.image-menu {
+    margin-top: 10px;
+}
+
+.image-option {
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+.comment {
+    resize: none;
+}
+
+.comment-text {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color: ghostwhite;
+}
+
+.comment-rating {
+    margin-right: 5px;
+    margin-left: 5px;
+}
