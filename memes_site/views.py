@@ -9,7 +9,7 @@ from django.views.decorators.http import require_http_methods
 
 from memes_site.forms import UploadImageForm
 from memes_site.models import Image, Vote, Comment, CommentVote
-from memes_site.utils import format_date, prepare_data
+from memes_site.utils import format_date, prepare_data, count_rating, voted_comments
 
 
 def index_page(request, page_number=1):
@@ -54,26 +54,12 @@ def image_view(request, image_id):
     image = Image.objects.get(pk=image_id)
     image.date = image.date.strftime("%H:%M %d-%m-%Y")
     comments_number = Comment.objects.filter(image=image).count()
-    down_voted_comments = []
-    up_voted_comments = []
-    comments_list = Comment.objects.filter(image=image).order_by('-rating')
-
-    for comment in comments_list:
-        comment.date = comment.date.strftime("%H:%M %d-%m-%Y")
-
-    try:
-        user = User.objects.get(username=request.user.get_username())
-        for comment in comments_list:
-            try:
-                comment_vote = CommentVote.objects.get(comment=comment, author=user)
-                if comment_vote.type == 'UP':
-                    up_voted_comments.append(comment.id)
-                else:
-                    down_voted_comments.append(comment.id)
-            except CommentVote.DoesNotExist:
-                continue
-    except User.DoesNotExist:
-        pass
+    comments_list = Comment.objects.filter(image=image)
+    format_date(comments_list)
+    count_rating(comments_list)
+    user_voted_comments = voted_comments(comments_list, request.user.get_username())
+    up_voted_comments = user_voted_comments[0]
+    down_voted_comments = user_voted_comments[1]
 
     data = {
         'image': image,
@@ -225,30 +211,21 @@ def comment_vote_view(request, vote_type, comment_id):
             if vote_type == 'vote_down':
                 comment_vote.type = 'DOWN'
                 comment_vote.save()
-                comment.rating -= 2
             elif vote_type == 'vote_up':
-                comment.rating -= 1
                 comment_vote.delete()
-            comment.save()
         elif comment_vote.type == 'DOWN':
             if vote_type == 'vote_down':
                 comment_vote.delete()
-                comment.rating += 1
             elif vote_type == 'vote_up':
-                comment.rating += 2
                 comment_vote.type = 'UP'
                 comment_vote.save()
-            comment.save()
     except CommentVote.DoesNotExist:
         comment_vote = CommentVote.objects.create(author=user, comment=comment)
         if vote_type == 'vote_down':
-            comment.rating -= 1
             comment_vote.type = 'DOWN'
         elif vote_type == 'vote_up':
-            comment.rating += 1
             comment_vote.type = 'UP'
         comment_vote.save()
-        comment.save()
 
     return HttpResponseRedirect("/image/%s/#%s" % (comment.image.id, comment_id))
 

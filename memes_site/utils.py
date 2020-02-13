@@ -1,22 +1,59 @@
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 
-from memes_site.models import Vote, Comment
+from memes_site.models import Vote, Comment, CommentVote
 
 
-def format_date(images):
+def format_date(objects):
     """
     Convert date to "H:M D-M-Y" format
-    :param images:
+    :param objects:
     :return: list of images with converted date
     """
-    for image in images:
-        image.date = image.date.strftime("%H:%M %d-%m-%Y")
+    for obj in objects:
+        obj.date = obj.date.strftime("%H:%M %d-%m-%Y")
 
 
-def votes_list(images, username):
+def count_rating(comments):
     """
-    Creates list of upvoted and downvoted images by user
+    Count rating of :model:`memes_site.Comment`
+    :param comments:
+    :return: sum of up and down votes
+    """
+    for comment in comments:
+        comment.rating = CommentVote.objects.filter(comment=comment, type="UP").count()
+        comment.rating -= CommentVote.objects.filter(comment=comment, type="DOWN").count()
+
+
+def voted_comments(comments, username):
+    """
+    Creates list of upvoted and downvoted :model:`memes_site.Comment` by user
+    :param images:
+    :param username:
+    :return: Pair of lists
+    """
+    up_voted_comments = []
+    down_voted_comments = []
+    try:
+        user = User.objects.get(username=username)
+        for comment in comments:
+            try:
+                comment_vote = CommentVote.objects.get(comment=comment, author=user)
+                if comment_vote.type == 'UP':
+                    up_voted_comments.append(comment.id)
+                else:
+                    down_voted_comments.append(comment.id)
+            except CommentVote.DoesNotExist:
+                continue
+    except User.DoesNotExist:
+        pass
+
+    return up_voted_comments, down_voted_comments
+
+
+def voted_images(images, username):
+    """
+    Creates list of upvoted and downvoted :model:`memes_site.Image` by user
     :param images:
     :param username:
     :return: Pair of lists
@@ -87,7 +124,7 @@ def prepare_data(page_images, request, paginator, page_number):
     :param page_number:
     :return: Page data
     """
-    votes = votes_list(page_images, request.user.get_username())
+    votes = voted_images(page_images, request.user.get_username())
     count_comments(page_images)
     data = {
         'images': page_images,
