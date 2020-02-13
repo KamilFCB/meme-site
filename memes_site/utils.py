@@ -128,7 +128,6 @@ def prepare_data(page_images, request, paginator, page_number):
     count_comments(page_images)
     data = {
         'images': page_images,
-        'menu': render_to_string('memes_site/menu.html', {'username': request.user.get_username()}),
         'username': request.user.get_username(),
         'comments_number': {'1': 0},
         'down_votes': votes[0],
