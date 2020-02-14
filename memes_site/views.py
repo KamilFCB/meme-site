@@ -65,13 +65,25 @@ def image_view(request, image_id):
     up_voted_comments = user_voted_comments[0]
     down_voted_comments = user_voted_comments[1]
 
+    voted = ''
+    user = User.objects.get(username=request.user.get_username())
+    try:
+        vote = Vote.objects.get(image=image, author=user)
+        if vote.type == "UP":
+            voted = "up"
+        elif vote.type == "DOWN":
+            voted = "down"
+    except Vote.DoesNotExist:
+        pass
+
     data = {
         'image': image,
         'comments_number': comments_number,
         'comments': comments_list,
         'down_voted': down_voted_comments,
         'up_voted': up_voted_comments,
-        'username': request.user.get_username()
+        'username': request.user.get_username(),
+        'voted': voted
     }
     return render(request, 'memes_site/image.html', data)
 

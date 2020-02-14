@@ -13,12 +13,20 @@
             </div>
             <div class="row image-menu">
                 <a href="{% url 'memes:vote_up' image.id %}?next={{ request.path }}">
-                    <button type="button" class="btn btn-secondary image-option">
+                    {% if voted == 'up' %}
+                        <button type="button" class="btn btn-secondary disabled image-option">
+                    {% else %}
+                        <button type="button" class="btn btn-secondary image-option">
+                    {% endif %}
                         <i class="fa fa-arrow-up" aria-hidden="true" style="color: #44c35f;"> {{ image.up_votes }}</i>
                     </button>
                 </a>
                 <a href="{% url 'memes:vote_down' image.id %}?next={{ request.path }}">
-                    <button type="button" class="btn btn-secondary image-option">
+                    {% if voted == 'down' %}
+                        <button type="button" class="btn btn-secondary disabled image-option">
+                    {% else %}
+                        <button type="button" class="btn btn-secondary image-option">
+                    {% endif %}
                         <i class="fa fa-arrow-down" aria-hidden="true"
                            style="color: #fc3903;"> {{ image.down_votes }}</i>
                     </button>
