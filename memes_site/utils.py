@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.template.loader import render_to_string
 
 from memes_site.models import Vote, Comment, CommentVote
 
@@ -28,7 +27,7 @@ def count_rating(comments):
 def voted_comments(comments, username):
     """
     Creates list of upvoted and downvoted :model:`memes_site.Comment` by user
-    :param images:
+    :param comments:
     :param username:
     :return: Pair of lists
     """
@@ -75,6 +74,17 @@ def voted_images(images, username):
         pass
 
     return down_votes, up_votes
+
+
+def count_images_votes(images):
+    """
+    Adds rating to :model:`memes_site.Image`
+    :param images:
+    :return:
+    """
+    for image in images:
+        image.up_votes = Vote.objects.filter(image=image, type="UP").count()
+        image.down_votes = Vote.objects.filter(image=image, type="DOWN").count()
 
 
 def pagination_manage(data, paginator, page_number, request):
@@ -125,6 +135,7 @@ def prepare_data(page_images, request, paginator, page_number):
     :return: Page data
     """
     votes = voted_images(page_images, request.user.get_username())
+    count_images_votes(page_images)
     count_comments(page_images)
     data = {
         'images': page_images,

@@ -12,8 +12,6 @@ class Image(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to='static/uploads/', default='')
-    up_votes = models.IntegerField(default=0)
-    down_votes = models.IntegerField(default=0)
 
     def is_valid(self):
         return self.image.width < 700

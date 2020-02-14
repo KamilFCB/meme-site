@@ -20,7 +20,9 @@ def index_page(request, page_number=1):
     :param page_number: default is equal 1
     :return: two images from selected page
     """
-    images_list = Image.objects.order_by('-id').filter(up_votes__gte=1)
+    images_list = [image for image in Image.objects.order_by('-id')
+                   if Vote.objects.filter(image=image, type="UP").count() >= 1]
+
     paginator = Paginator(images_list, 2)
     page_images = paginator.get_page(page_number)
     format_date(page_images)
@@ -53,6 +55,8 @@ def image_view(request, image_id):
     """
     image = Image.objects.get(pk=image_id)
     image.date = image.date.strftime("%H:%M %d-%m-%Y")
+    image.up_votes = Vote.objects.filter(image=image, type="UP").count()
+    image.down_votes = Vote.objects.filter(image=image, type="DOWN").count()
     comments_number = Comment.objects.filter(image=image).count()
     comments_list = Comment.objects.filter(image=image)
     format_date(comments_list)
@@ -147,17 +151,10 @@ def image_vote_up(request, image_id):
         vote = Vote.objects.get(image=image, author=user)
         if vote.type == 'UP':
             vote.delete()
-            image.up_votes -= 1
-            image.save()
         else:
             vote.type = 'UP'
-            image.up_votes += 1
-            image.down_votes -= 1
-            image.save()
             vote.save()
     except Vote.DoesNotExist:
-        image.up_votes += 1
-        image.save()
         Vote.objects.create(image=image, author=user, type='UP')
     return HttpResponseRedirect("%s#%s" % (request.GET['next'], image.id))
 
@@ -176,17 +173,10 @@ def image_vote_down(request, image_id):
         vote = Vote.objects.get(image=image, author=user)
         if vote.type == 'DOWN':
             vote.delete()
-            image.down_votes -= 1
-            image.save()
         else:
             vote.type = 'DOWN'
-            image.down_votes += 1
-            image.up_votes -= 1
-            image.save()
             vote.save()
     except Vote.DoesNotExist:
-        image.down_votes += 1
-        image.save()
         Vote.objects.create(image=image, author=user, type='DOWN')
     return HttpResponseRedirect("%s#%s" % (request.GET['next'], image.id))
 
