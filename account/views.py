@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.db import IntegrityError
@@ -33,19 +34,16 @@ def manage_view(request):
     })
 
 
-def login_view(request, status=""):
+def login_view(request):
     """
     Display login page
     :param request:
-    :param status: equal 'fail' if login error occured
     :return: Login form
     """
     data = {}
 
     if request.user.is_authenticated:
         return HttpResponseRedirect("/")
-    if status == 'fail':
-        data['error_message'] = "Błędny login i/lub hasło!"
 
     try:
         data['next'] = request.GET['next']
@@ -69,14 +67,16 @@ def login_validate(request):
         password = request.POST['password']
         next_page = request.POST['redirect']
     except KeyError:
-        return render(request, 'account/login.html', {})
+        return redirect('account:login')
 
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
+        messages.add_message(request, messages.INFO, "Zalogowano pomyślnie!")
         return HttpResponseRedirect(next_page)
 
-    return HttpResponseRedirect('/account/login/fail')
+    messages.add_message(request, messages.ERROR, "Błędny login i/lub hasło!")
+    return redirect('account:login')
 
 
 def logout_view(request):
@@ -87,7 +87,8 @@ def logout_view(request):
     """
     if request.user.is_authenticated:
         logout(request)
-    return HttpResponseRedirect("/")
+        messages.add_message(request, messages.INFO, "Wylogowano pomyślnie!")
+    return redirect("memes:index")
 
 
 def register_view(request):
