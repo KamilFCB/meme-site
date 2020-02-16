@@ -90,19 +90,16 @@ def logout_view(request):
     return HttpResponseRedirect("/")
 
 
-def register_view(request, status=""):
+def register_view(request):
     """
     Display register form
     :param request:
-    :param status: equal 'fail' if login error occured
     :return: Register form
     """
-    data = {}
     if request.user.is_authenticated:
-        return HttpResponseRedirect("/")
-    if status == "fail":
-        data['error_message'] = "Taki użytkownik już istnieje!"
-    return render(request, 'account/register.html', data)
+        messages.add_message(request, messages.INFO, "Wyloguj się, aby utworzyć nowe konto.")
+        return redirect("memes:index")
+    return render(request, 'account/register.html', {})
 
 
 @require_http_methods(["POST"])
@@ -121,6 +118,8 @@ def register_validate(request):
 
     try:
         User.objects.create_user(username, email, password)
+        messages.add_message(request, messages.INFO, "Rejestracja powiodła się!")
         return redirect('memes:index')
     except IntegrityError:
-        return HttpResponseRedirect("/account/register/fail")
+        messages.add_message(request, messages.ERROR, "Taki użytkownik już istnieje!")
+        return redirect('account:register')
