@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
@@ -194,7 +195,7 @@ def image_vote_down(request, image_id):
 
 
 @login_required
-def comment_vote_view(request, vote_type, comment_id):
+def comment_vote(request, vote_type, comment_id):
     """
     Creates a new comment vote or change existing one
     :param request:
@@ -208,26 +209,26 @@ def comment_vote_view(request, vote_type, comment_id):
     except Comment.DoesNotExist:
         return HttpResponseRedirect("/")
     try:
-        comment_vote = CommentVote.objects.get(author=user, comment=comment)
-        if comment_vote.type == 'UP':
+        user_comment_vote = CommentVote.objects.get(author=user, comment=comment)
+        if user_comment_vote.type == 'UP':
             if vote_type == 'vote_down':
-                comment_vote.type = 'DOWN'
-                comment_vote.save()
+                user_comment_vote.type = 'DOWN'
+                user_comment_vote.save()
             elif vote_type == 'vote_up':
-                comment_vote.delete()
-        elif comment_vote.type == 'DOWN':
+                user_comment_vote.delete()
+        elif user_comment_vote.type == 'DOWN':
             if vote_type == 'vote_down':
-                comment_vote.delete()
+                user_comment_vote.delete()
             elif vote_type == 'vote_up':
-                comment_vote.type = 'UP'
-                comment_vote.save()
+                user_comment_vote.type = 'UP'
+                user_comment_vote.save()
     except CommentVote.DoesNotExist:
-        comment_vote = CommentVote.objects.create(author=user, comment=comment)
+        user_comment_vote = CommentVote.objects.create(author=user, comment=comment)
         if vote_type == 'vote_down':
-            comment_vote.type = 'DOWN'
+            user_comment_vote.type = 'DOWN'
         elif vote_type == 'vote_up':
-            comment_vote.type = 'UP'
-        comment_vote.save()
+            user_comment_vote.type = 'UP'
+        user_comment_vote.save()
 
     return HttpResponseRedirect("/image/%s/#%s" % (comment.image.id, comment_id))
 
