@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.contrib.auth.models import User
@@ -142,9 +142,9 @@ def image_upload_view(request):
             instance = Image(image=request.FILES['image'], author=user, title=request.POST['title'])
             if instance.is_valid():
                 instance.save()
-                return render(request, 'memes_site/upload.html', data)
+                return redirect("memes:image", instance.id)
 
-            data['error_message'] = "Zbyt szeroki obrazek!"
+            messages.add_message(request, messages.ERROR, "Zbyt szeroki obrazek!")
             return render(request, 'memes_site/upload.html', data)
     return render(request, 'memes_site/upload.html', data)
 
