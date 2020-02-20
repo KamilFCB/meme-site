@@ -10,7 +10,7 @@ from django.views.decorators.http import require_http_methods
 
 from memes_site.forms import UploadImageForm
 from memes_site.models import Image, Vote, Comment, CommentVote
-from memes_site.utils import format_date, prepare_data, count_rating, voted_comments
+from memes_site.utils import format_date, prepare_data, count_rating, voted_comments, count_images_votes
 
 
 def index_page(request, page_number=1):
@@ -262,15 +262,18 @@ def user_view(request, username):
     :return: Uploaded, commented and voted images by user
     """
     user = User.objects.get(username=username)
-    posts = Image.objects.filter(author=user).order_by('-id')
+    user_posts = Image.objects.filter(author=user).order_by('-id')
+    count_images_votes(user_posts)
     user_comments = Comment.objects.filter(author=user).distinct('image')
-    comments = [comment.image for comment in user_comments]
+    commented_memes = [comment.image for comment in user_comments]
+    count_images_votes(commented_memes)
     user_votes = Vote.objects.filter(author=user)
-    votes = [vote.image for vote in user_votes]
+    voted_memes = [vote.image for vote in user_votes]
+    count_images_votes(voted_memes)
     data = {
-        'posts': posts,
-        'comments': comments,
-        'votes': votes,
+        'posts': user_posts,
+        'comments': commented_memes,
+        'votes': voted_memes,
         'username': request.user.get_username(),
         'view_username': username
     }
