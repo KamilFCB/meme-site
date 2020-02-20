@@ -67,14 +67,16 @@ def image_view(request, image_id):
     down_voted_comments = user_voted_comments[1]
 
     voted = ''
-    user = User.objects.get(username=request.user.get_username())
     try:
+        user = User.objects.get(username=request.user.get_username())
         vote = Vote.objects.get(image=image, author=user)
         if vote.type == "UP":
             voted = "up"
         elif vote.type == "DOWN":
             voted = "down"
     except Vote.DoesNotExist:
+        pass
+    except User.DoesNotExist:
         pass
 
     data = {
