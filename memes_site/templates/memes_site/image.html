@@ -3,7 +3,7 @@
     <div class="row image" id="{{ image.id }}">
         <div class="col-xl-8 offset-xl-2">
             <div class="row">
-                <h6>{{ image.author }} {{ image.date }}</h6>
+                <h6><a href="{% url 'memes:user_memes' image.author %}">{{ image.author }}</a> {{ image.date }}</h6>
             </div>
             <div class="row">
                 <h3>{{ image.title }}</h3>
@@ -52,7 +52,7 @@
             <div class="col-xl-8 offset-xl-2">
                 <hr>
                 <div class="row">
-                    <strong style="margin-right: 10px">{{ comment.author.username }}</strong> {{ comment.date }}
+                    <strong style="margin-right: 10px"><a href="{% url 'memes:user_memes' comment.author %}">{{ comment.author }}</a></strong> {{ comment.date }}
                     {% if comment.author.username == username %}
                         <form method="post" action="{% url 'memes:delete_comment' %}">
                             {% csrf_token %}

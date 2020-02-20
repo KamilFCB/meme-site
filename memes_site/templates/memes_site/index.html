@@ -16,7 +16,7 @@
         <div class="row image" id="{{ image.id }}">
             <div class="col-xl-8 offset-xl-2">
                 <div class="row">
-                    <h6>{{ image.author }} {{ image.date }}</h6>
+                    <h6><a href="{% url 'memes:user_memes' image.author %}">{{ image.author }}</a> {{ image.date }}</h6>
                 </div>
                 <div class="row">
                     <h3><a href="{% url 'memes:image' image.id %}">{{ image.title }}</a></h3>
