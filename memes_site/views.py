@@ -171,7 +171,11 @@ def image_vote_up(request, image_id):
             vote.save()
     except Vote.DoesNotExist:
         Vote.objects.create(image=image, author=user, type='UP')
-    return HttpResponseRedirect("%s#%s" % (request.GET['next'], image.id))
+
+    try:
+        return HttpResponseRedirect("%s#%s" % (request.GET['next'], image.id))
+    except KeyError:
+        return redirect('memes:index')
 
 
 @login_required
@@ -193,7 +197,10 @@ def image_vote_down(request, image_id):
             vote.save()
     except Vote.DoesNotExist:
         Vote.objects.create(image=image, author=user, type='DOWN')
-    return HttpResponseRedirect("%s#%s" % (request.GET['next'], image.id))
+    try:
+        return HttpResponseRedirect("%s#%s" % (request.GET['next'], image.id))
+    except KeyError:
+        return redirect('memes:index')
 
 
 @login_required
