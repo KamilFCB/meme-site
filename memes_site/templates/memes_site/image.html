@@ -18,7 +18,7 @@
                     {% else %}
                         <button type="button" class="btn btn-secondary image-option">
                     {% endif %}
-                        <i class="fa fa-arrow-up" aria-hidden="true" style="color: #44c35f;"> {{ image.up_votes }}</i>
+                    <i class="fa fa-arrow-up" aria-hidden="true" style="color: #44c35f;"> {{ image.up_votes }}</i>
                     </button>
                 </a>
                 <a href="{% url 'memes:vote_down' image.id %}?next={{ request.path }}">
@@ -27,8 +27,8 @@
                     {% else %}
                         <button type="button" class="btn btn-secondary image-option">
                     {% endif %}
-                        <i class="fa fa-arrow-down" aria-hidden="true"
-                           style="color: #fc3903;"> {{ image.down_votes }}</i>
+                    <i class="fa fa-arrow-down" aria-hidden="true"
+                       style="color: #fc3903;"> {{ image.down_votes }}</i>
                     </button>
                 </a>
             </div>
@@ -41,7 +41,8 @@
             <form action="{% url 'memes:create_comment' image.id %}" method="post" style="margin-top: 30px">
                 {% csrf_token %}
                 <div class="form-group">
-                    <textarea class="form-control comment" name="comment" placeholder="Napisz komentarz..." required></textarea>
+                    <textarea class="form-control comment" name="comment" placeholder="Napisz komentarz..."
+                              required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Dodaj</button>
             </form>
@@ -52,7 +53,9 @@
             <div class="col-xl-8 offset-xl-2">
                 <hr>
                 <div class="row">
-                    <strong style="margin-right: 10px"><a href="{% url 'memes:user_memes' comment.author %}">{{ comment.author }}</a></strong> {{ comment.date }}
+                    <strong style="margin-right: 10px"><a
+                            href="{% url 'memes:user_memes' comment.author %}">{{ comment.author }}</a></strong>
+                    {{ comment.date }}
                     {% if comment.author.username == username %}
                         <form method="post" action="{% url 'memes:delete_comment' %}">
                             {% csrf_token %}
@@ -68,25 +71,25 @@
                     <span style="color: white">{{ comment.content }}</span>
                 </div>
                 <div class="row">
-                    <a href="{% url 'memes:comment_vote_up' 'vote_up' comment.id %}">
+                    <a href="{% url 'memes:comment_vote' 'vote_up' comment.id %}">
                         {% if comment.id in up_voted %}
                             <button type="button" class="btn btn-primary btn-sm disabled">
                         {% else %}
                             <button type="button" class="btn btn-primary btn-sm">
                         {% endif %}
-                            <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                        <i class="fa fa-arrow-up" aria-hidden="true"></i>
                         </button>
                     </a>
                     <span class="comment-rating">
                         {{ comment.rating }}
                     </span>
-                    <a href="{% url 'memes:comment_vote_up' 'vote_down' comment.id %}">
+                    <a href="{% url 'memes:comment_vote' 'vote_down' comment.id %}">
                         {% if comment.id in down_voted %}
                             <button type="button" class="btn btn-primary btn-sm disabled">
                         {% else %}
                             <button type="button" class="btn btn-primary btn-sm">
                         {% endif %}
-                            <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                        <i class="fa fa-arrow-down" aria-hidden="true"></i>
                         </button>
                     </a>
                 </div>
