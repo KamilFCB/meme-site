@@ -71,3 +71,29 @@ class SiteTests(TestCase):
         self.client.get(url)
         self.assertEqual(CommentVote.objects.filter(comment=self.comment, type="UP").count(), 0)
         self.assertEqual(CommentVote.objects.filter(comment=self.comment, type="DOWN").count(), 1)
+
+    def test_comment_add(self):
+        url = reverse('memes:create_comment', kwargs={'image_id': self.image.id})
+        self.client.post(url, {'comment': "test"})
+        self.assertEqual(Comment.objects.count(), 2)
+
+    def test_comment_add_without_login(self):
+        self.client.logout()
+        url = reverse('memes:create_comment', kwargs={'image_id': self.image.id})
+        self.client.post(url, {'comment': "test"})
+        self.assertEqual(Comment.objects.count(), 1)
+
+    def test_comment_delete(self):
+        url = reverse('memes:delete_comment')
+        self.client.post(url, {'comment_id': self.comment.id,
+                               'next': '/'})
+        self.assertEqual(Comment.objects.count(), 0)
+
+    def test_another_user_comment_delete(self):
+        user = User.objects.create_user(username='kamil', password='kamil', email='kamil@kamil.pl')
+        comment = Comment.objects.create(content="test2", author=user, image=self.image)
+        url = reverse('memes:delete_comment')
+        response = self.client.post(url, {'comment_id': comment.id,
+                                          'next': '/'})
+        self.assertEqual(Comment.objects.count(), 2)
+        self.assertEqual(response.url, '/')
