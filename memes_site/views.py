@@ -123,9 +123,11 @@ def delete_comment(request):
         comment.delete()
         return HttpResponseRedirect(next_page)
     except Image.DoesNotExist:
-        return HttpResponseRedirect("/")
+        return redirect('memes:index')
+    except Comment.DoesNotExist:
+        return redirect('memes:index')
     except KeyError:
-        return HttpResponseRedirect("/")
+        return redirect('memes:index')
 
 
 @login_required
